@@ -1,9 +1,11 @@
 package com.laundrygo.shorturl.repository;
 
-import com.laundrygo.shorturl.domain.Member;
-import org.apache.ibatis.annotations.Mapper;
-
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.laundrygo.shorturl.domain.Member;
 
 /**
  * @author laundrygo
@@ -11,6 +13,6 @@ import java.util.List;
  * @since 2021/06/22 7:06 오후
  */
 @Mapper
-public interface MemberRepository {
-    List<Member> findAll();
+public interface MemberRepository extends JpaRepository<Member, Long> {
+	List<Member> findAll();
 }
