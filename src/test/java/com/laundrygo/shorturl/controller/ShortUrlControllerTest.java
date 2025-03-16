@@ -31,7 +31,8 @@ class ShortUrlControllerTest extends ControllerTestSupport {
 		ShortUrlRequest request = new ShortUrlRequest(originUrl);
 		// when then
 		mockMvc.perform(post("/api/v1/short-url").contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(request))).andExpect(status().isBadRequest())
+				.content(objectMapper.writeValueAsString(request)))
+			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.message").value("url은 필수 값입니다."));
 	}
 
@@ -43,7 +44,8 @@ class ShortUrlControllerTest extends ControllerTestSupport {
 		ShortUrlRequest request = new ShortUrlRequest(originUrl);
 		// when then
 		mockMvc.perform(post("/api/v1/short-url").contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(request))).andExpect(status().isBadRequest())
+				.content(objectMapper.writeValueAsString(request)))
+			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.message").value("url은 필수 값입니다."));
 	}
 
@@ -55,7 +57,8 @@ class ShortUrlControllerTest extends ControllerTestSupport {
 		ShortUrlRequest request = new ShortUrlRequest(originUrl);
 		// when then
 		mockMvc.perform(post("/api/v1/short-url").contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(request))).andExpect(status().isBadRequest())
+				.content(objectMapper.writeValueAsString(request)))
+			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.message").value("유효하지 않은 URL 입니다."));
 	}
 
