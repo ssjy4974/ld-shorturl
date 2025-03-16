@@ -25,5 +25,12 @@ public class UrlMapping extends BaseEntity {
 	@Column(nullable = false, unique = true, length = 8)
 	private String shortUrl;
 
+	public static UrlMapping create(String originUrl, String shortUrl) {
+		UrlMapping urlMapping = new UrlMapping();
+		urlMapping.originUrl = originUrl;
+		urlMapping.shortUrl = shortUrl;
+		return urlMapping;
+	}
+
 }
 
