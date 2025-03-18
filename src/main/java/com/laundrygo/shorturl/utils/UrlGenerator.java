@@ -19,7 +19,8 @@ public abstract class UrlGenerator {
 		Assert.hasText(originUrl, "URL은 필수 값 입니다.");
 		byte[] hashBytes = createHash(originUrl);
 		String urlSafeEncoded = Base64.getUrlEncoder().withoutPadding().encodeToString(hashBytes);
-		return urlSafeEncoded.substring(0, SHORT_URL_LENGTH);
+		String alphanumericOnly = urlSafeEncoded.replace("-", "A").replace("_", "Z");
+		return alphanumericOnly.substring(0, SHORT_URL_LENGTH);
 	}
 
 	private static byte[] createHash(String input) {
