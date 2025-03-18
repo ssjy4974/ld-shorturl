@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
 import com.laundrygo.shorturl.ControllerTestSupport;
-import com.laundrygo.shorturl.controller.reuqest.ShortUrlRequest;
+import com.laundrygo.shorturl.controller.request.ShortUrlRequest;
 
 class ShortUrlControllerTest extends ControllerTestSupport {
 

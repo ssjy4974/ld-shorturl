@@ -1,5 +1,6 @@
 package com.laundrygo.shorturl.service;
 
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -28,13 +29,17 @@ public class ShortUrlService {
 		return originUrlMapping.getShortUrl();
 	}
 
+	public UrlMapping getOriginUrl(String shortUrl) {
+		return urlMappingRepository.findByShortUrl(shortUrl)
+			.orElseThrow(() -> new NoSuchElementException("요청정보가 존재하지 않습니다."));
+	}
+
 	private UrlMapping createShortUrl(String originUrl) {
 		try {
 			String shorten = UrlGenerator.shorten(originUrl);
 			return urlMappingRepository.save(UrlMapping.create(originUrl, shorten));
 		} catch (DataIntegrityViolationException e) {
 			String shorten = UrlGenerator.shorten(originUrl + UUID.randomUUID());
-			log.error("DataIntegrityViolationException : origin URl : {}", originUrl, e);
 			return urlMappingRepository.save(UrlMapping.create(originUrl, shorten));
 		}
 	}

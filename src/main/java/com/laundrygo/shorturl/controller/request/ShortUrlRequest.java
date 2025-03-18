@@ -1,4 +1,4 @@
-package com.laundrygo.shorturl.controller.reuqest;
+package com.laundrygo.shorturl.controller.request;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
