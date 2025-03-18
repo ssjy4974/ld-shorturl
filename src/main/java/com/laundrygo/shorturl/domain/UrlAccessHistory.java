@@ -23,4 +23,11 @@ public class UrlAccessHistory extends BaseEntity {
 	private String originUrl;
 	@Column(nullable = false, length = 8)
 	private String shortUrl;
+
+	public static UrlAccessHistory create(String originUrl, String shortUrl) {
+		UrlAccessHistory urlAccessHistory = new UrlAccessHistory();
+		urlAccessHistory.originUrl = originUrl;
+		urlAccessHistory.shortUrl = shortUrl;
+		return urlAccessHistory;
+	}
 }

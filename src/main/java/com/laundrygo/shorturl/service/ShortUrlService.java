@@ -7,6 +7,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.laundrygo.shorturl.domain.UrlAccessHistory;
 import com.laundrygo.shorturl.domain.UrlMapping;
 import com.laundrygo.shorturl.repository.UrlAccessHistoryRepository;
 import com.laundrygo.shorturl.repository.UrlMappingRepository;
@@ -30,8 +31,11 @@ public class ShortUrlService {
 	}
 
 	public String getOriginUrl(String shortUrl) {
-		return urlMappingRepository.findByShortUrl(shortUrl)
+		String originUrl = urlMappingRepository.findByShortUrl(shortUrl)
 			.orElseThrow(() -> new NoSuchElementException("요청정보가 존재하지 않습니다.")).getOriginUrl();
+		UrlAccessHistory history = UrlAccessHistory.create(originUrl, shortUrl);
+		urlAccessHistoryRepository.save(history);
+		return originUrl;
 	}
 
 	private UrlMapping createShortUrl(String originUrl) {
