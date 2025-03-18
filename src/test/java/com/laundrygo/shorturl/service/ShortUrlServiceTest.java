@@ -47,12 +47,11 @@ class ShortUrlServiceTest {
 		UrlMapping savedUrl = urlMappingRepository.save(urlMapping);
 
 		// when:
-		UrlMapping result = shortUrlService.getOriginUrl(savedUrl.getShortUrl());
+		String resultUrl = shortUrlService.getOriginUrl(savedUrl.getShortUrl());
 
 		// then
-		assertNotNull(result);
-		assertEquals(originUrl, result.getOriginUrl());
-		assertEquals(shortUrl, result.getShortUrl());
+		assertNotNull(resultUrl);
+		assertEquals(originUrl, resultUrl);
 	}
 
 	@Test

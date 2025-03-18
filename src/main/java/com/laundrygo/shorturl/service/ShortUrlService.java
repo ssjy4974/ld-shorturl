@@ -29,9 +29,9 @@ public class ShortUrlService {
 		return originUrlMapping.getShortUrl();
 	}
 
-	public UrlMapping getOriginUrl(String shortUrl) {
+	public String getOriginUrl(String shortUrl) {
 		return urlMappingRepository.findByShortUrl(shortUrl)
-			.orElseThrow(() -> new NoSuchElementException("요청정보가 존재하지 않습니다."));
+			.orElseThrow(() -> new NoSuchElementException("요청정보가 존재하지 않습니다.")).getOriginUrl();
 	}
 
 	private UrlMapping createShortUrl(String originUrl) {
