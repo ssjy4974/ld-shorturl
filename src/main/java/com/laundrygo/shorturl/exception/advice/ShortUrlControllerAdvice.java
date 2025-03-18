@@ -1,5 +1,7 @@
 package com.laundrygo.shorturl.exception.advice;
 
+import java.util.NoSuchElementException;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -34,6 +36,24 @@ public class ShortUrlControllerAdvice {
 		return ErrorResponse.builder()
 			.code(HttpStatus.BAD_REQUEST)
 			.message("단축URL 생성에 실패하였습니다. 재시도 부탁드립니다.")
+			.build();
+	}
+
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ExceptionHandler(NoSuchElementException.class)
+	public ErrorResponse noSuchElementException(NoSuchElementException e) {
+		return ErrorResponse.builder()
+			.code(HttpStatus.NOT_FOUND)
+			.message(e.getMessage())
+			.build();
+	}
+
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ErrorResponse illegalArgumentException(IllegalArgumentException e) {
+		return ErrorResponse.builder()
+			.code(HttpStatus.BAD_REQUEST)
+			.message(e.getMessage())
 			.build();
 	}
 }
