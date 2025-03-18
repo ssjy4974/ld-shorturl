@@ -1,10 +1,15 @@
 package com.laundrygo.shorturl.controller;
 
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.NoSuchElementException;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.http.MediaType;
 
 import com.laundrygo.shorturl.ControllerTestSupport;
@@ -60,6 +65,51 @@ class ShortUrlControllerTest extends ControllerTestSupport {
 				.content(objectMapper.writeValueAsString(request)))
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.message").value("유효하지 않은 URL 입니다."));
+	}
+
+	@Test
+	@DisplayName("단축url로 원본url을 조회한다.")
+	public void getOriginUrl_success() throws Exception {
+		// given
+		String shortUrl = "abc123de";
+		String originUrl = "https://www.example.com/very/long/url/path";
+
+		when(shortUrlService.getOriginUrl(shortUrl)).thenReturn(originUrl);
+
+		// when & then
+		mockMvc.perform(get("/api/v1/origin-url/{shortUrl}", shortUrl))
+			.andExpect(status().isOk())
+			.andExpect(content().string(originUrl));
+
+		verify(shortUrlService, times(1)).getOriginUrl(shortUrl);
+	}
+
+	@Test
+	@DisplayName("존재하지 않는 단축URL로 원본URL 조회시 실패한다.")
+	public void getOriginUrl_NotFound() throws Exception {
+		// given
+		String shortUrl = "notfound";
+
+		when(shortUrlService.getOriginUrl(shortUrl))
+			.thenThrow(new NoSuchElementException("요청정보가 존재하지 않습니다."));
+
+		// when & then
+		mockMvc.perform(get("/api/v1/origin-url/{shortUrl}", shortUrl))
+			.andExpect(status().isNotFound());
+
+		verify(shortUrlService, times(1)).getOriginUrl(shortUrl);
+	}
+
+	@ParameterizedTest
+	@ValueSource(strings = {"abc-123", "abcdefghi"})
+	@DisplayName("유효하지 않는 단축URL로 원본URL 조회 시 실패한다.")
+	public void getOriginUrl_BadRequest(String invalidShortUrl) throws Exception {
+		// when & then
+		mockMvc.perform(get("/api/v1/origin-url/{shortUrl}", invalidShortUrl))
+			.andExpect(status().isBadRequest());
+
+		// UrlValidator에서 예외가 발생하므로 서비스까지 호출되지 않음
+		verify(shortUrlService, never()).getOriginUrl(invalidShortUrl);
 	}
 
 }
