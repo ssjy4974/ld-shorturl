@@ -51,7 +51,7 @@ class ShortUrlControllerTest extends ControllerTestSupport {
 		mockMvc.perform(post("/api/v1/short-url").contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(request)))
 			.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.message").value("유효하지 않은 URL 입니다."));
+			.andExpect(jsonPath("$.message").value("URL은 필수 값입니다."));
 	}
 
 	@Test

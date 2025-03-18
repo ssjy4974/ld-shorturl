@@ -1,8 +1,7 @@
 package com.laundrygo.shorturl.controller;
 
-import javax.validation.Valid;
-
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.laundrygo.shorturl.controller.request.ShortUrlRequest;
 import com.laundrygo.shorturl.service.ShortUrlService;
 import com.laundrygo.shorturl.utils.UrlValidator;
+import com.laundrygo.shorturl.utils.ValidationOrder;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,7 +23,8 @@ public class ShortUrlController {
 	private final ShortUrlService shortUrlService;
 
 	@PostMapping("/short-url")
-	public ResponseEntity<String> getShortUrl(@RequestBody @Valid ShortUrlRequest request) {
+	public ResponseEntity<String> getShortUrl(
+		@RequestBody @Validated(ValidationOrder.All.class) ShortUrlRequest request) {
 		return ResponseEntity.ok(shortUrlService.getShortUrl(request.getOriginUrl()));
 	}
 
