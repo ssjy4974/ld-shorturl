@@ -26,8 +26,8 @@ public class ShortUrlControllerAdvice {
 			.build();
 	}
 
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(MethodArgumentNotValidException.class)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	@ExceptionHandler(DataIntegrityViolationException.class)
 	public ErrorResponse dataIntegrityViolationException(DataIntegrityViolationException e) {
 		// 단축 url 생성 후 insert 시도 시 중복 url 인 경우 재시도 1번 수행 후 이후에도 실패하면 advice에서 catch
 		log.error("DataIntegrityViolationException :  {}", e.getMessage(), e);
