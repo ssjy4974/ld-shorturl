@@ -38,7 +38,7 @@ class ShortUrlControllerTest extends ControllerTestSupport {
 		mockMvc.perform(post("/api/v1/short-url").contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(request)))
 			.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.message").value("url은 필수 값입니다."));
+			.andExpect(jsonPath("$.message").value("URL은 필수 값입니다."));
 	}
 
 	@Test
@@ -51,7 +51,7 @@ class ShortUrlControllerTest extends ControllerTestSupport {
 		mockMvc.perform(post("/api/v1/short-url").contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(request)))
 			.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.message").value("url은 필수 값입니다."));
+			.andExpect(jsonPath("$.message").value("유효하지 않은 URL 입니다."));
 	}
 
 	@Test
@@ -90,12 +90,10 @@ class ShortUrlControllerTest extends ControllerTestSupport {
 		// given
 		String shortUrl = "notfound";
 
-		when(shortUrlService.getOriginUrl(shortUrl))
-			.thenThrow(new NoSuchElementException("요청정보가 존재하지 않습니다."));
+		when(shortUrlService.getOriginUrl(shortUrl)).thenThrow(new NoSuchElementException("요청정보가 존재하지 않습니다."));
 
 		// when & then
-		mockMvc.perform(get("/api/v1/origin-url/{shortUrl}", shortUrl))
-			.andExpect(status().isNotFound());
+		mockMvc.perform(get("/api/v1/origin-url/{shortUrl}", shortUrl)).andExpect(status().isNotFound());
 
 		verify(shortUrlService, times(1)).getOriginUrl(shortUrl);
 	}
@@ -105,8 +103,7 @@ class ShortUrlControllerTest extends ControllerTestSupport {
 	@DisplayName("유효하지 않는 단축URL로 원본URL 조회 시 실패한다.")
 	public void getOriginUrl_BadRequest(String invalidShortUrl) throws Exception {
 		// when & then
-		mockMvc.perform(get("/api/v1/origin-url/{shortUrl}", invalidShortUrl))
-			.andExpect(status().isBadRequest());
+		mockMvc.perform(get("/api/v1/origin-url/{shortUrl}", invalidShortUrl)).andExpect(status().isBadRequest());
 
 		// UrlValidator에서 예외가 발생하므로 서비스까지 호출되지 않음
 		verify(shortUrlService, never()).getOriginUrl(invalidShortUrl);

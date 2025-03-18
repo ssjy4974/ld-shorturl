@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShortUrlRequest {
-	@NotBlank(message = "url은 필수 값입니다.")
+	@NotBlank(message = "URL은 필수 값입니다.")
 	@Pattern(regexp = "^(https?)://([a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*)(?::\\d+)?(/.*)?$", message = "유효하지 않은 URL 입니다.")
 	private String originUrl;
 }
