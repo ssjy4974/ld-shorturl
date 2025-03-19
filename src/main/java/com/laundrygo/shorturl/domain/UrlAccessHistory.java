@@ -1,5 +1,7 @@
 package com.laundrygo.shorturl.domain;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,11 +25,18 @@ public class UrlAccessHistory extends BaseEntity {
 	private String originUrl;
 	@Column(nullable = false, length = 8)
 	private String shortUrl;
+	@Column(nullable = false)
+	private LocalDateTime requestDttm;
 
 	public static UrlAccessHistory create(String originUrl, String shortUrl) {
 		UrlAccessHistory urlAccessHistory = new UrlAccessHistory();
 		urlAccessHistory.originUrl = originUrl;
 		urlAccessHistory.shortUrl = shortUrl;
+		urlAccessHistory.requestDttm = LocalDateTime.now();
 		return urlAccessHistory;
+	}
+
+	public void setTestRequestDttm(LocalDateTime time) {
+		this.requestDttm = time;
 	}
 }
