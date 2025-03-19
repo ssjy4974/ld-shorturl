@@ -1,13 +1,16 @@
 package com.laundrygo.shorturl.controller;
 
-import com.laundrygo.shorturl.domain.Member;
-import com.laundrygo.shorturl.service.MemberService;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.laundrygo.shorturl.service.MemberService;
+import com.laundrygo.shorturl.service.response.MemberResponse;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author laundrygo
@@ -18,10 +21,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/members")
 public class MemberController {
-    private final MemberService memberService;
+	private final MemberService memberService;
 
-    @GetMapping
-    public List<Member> findAll() {
-        return memberService.findAll();
-    }
+	@GetMapping
+	public ResponseEntity<List<MemberResponse>> findAll() {
+		return ResponseEntity.ok(memberService.findAll());
+	}
 }
